@@ -2,37 +2,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSim Media Suite - Audio Player</title>
+  <title>Apple Style Audio Player</title>
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-</head>
-<style>
-  /* Base Styles */
+  <style>
+    /* Apple-Inspired Base Styles */
+:root {
+  --primary-color: #007AFF;
+  --background-color: #f5f5f7;
+  --container-bg: #ffffff;
+  --text-color: #1d1d1f;
+  --subtext-color: #3c3c4399;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #16222a, #3a6073);
-  color: #fff;
-  transition: background 0.5s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  background: var(--background-color);
+  color: var(--text-color);
   min-height: 100vh;
+  line-height: 1.5;
 }
+
 .container {
   max-width: 1200px;
   margin: 40px auto;
   padding: 25px;
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.7);
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(5px);
+  background: var(--container-bg);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px var(--shadow-color);
 }
 
 /* Tabs */
 .tabs {
   display: flex;
   margin-bottom: 25px;
-  border-bottom: 2px solid #555;
+  border-bottom: 1px solid #d1d1d6;
 }
 .tab {
   background: transparent;
@@ -40,17 +47,17 @@ body {
   padding: 14px 28px;
   cursor: pointer;
   font-size: 16px;
-  color: #ccc;
+  color: var(--subtext-color);
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
 }
 .tab:hover {
-  color: #fff;
+  color: var(--primary-color);
   transform: scale(1.05);
 }
 .tab.active {
-  color: #fff;
-  border-bottom: 3px solid #00aced;
+  color: var(--primary-color);
+  border-bottom: 3px solid var(--primary-color);
 }
 
 /* Tab Content */
@@ -72,52 +79,51 @@ body {
 .track-info .track-title {
   font-size: 28px;
   margin: 0;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+  font-weight: 600;
 }
 .track-info .track-indicator {
   font-size: 16px;
-  color: #a1a1a1;
+  color: var(--subtext-color);
   margin-top: 4px;
 }
 .track-info .track-artist {
   font-size: 18px;
-  color: #b0c4de;
+  color: var(--primary-color);
   margin: 0;
 }
 .audio-details {
-  background: rgba(0, 0, 0, 0.45);
+  background: #f2f2f7;
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 25px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   font-size: 15px;
 }
 .audio-details h4 {
   margin: 0 0 10px 0;
   font-size: 20px;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #d1d1d6;
   padding-bottom: 5px;
 }
 .audio-details p {
   margin: 6px 0;
-  line-height: 1.5;
 }
 .audio-upload {
   text-align: center;
   margin-bottom: 25px;
 }
 #audio-upload-btn {
-  background: #007bb5;
+  background: var(--primary-color);
   border: none;
   padding: 12px 24px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   transition: background 0.3s ease;
 }
 #audio-upload-btn:hover {
-  background: #005f87;
+  background: #005bb5;
 }
 
 /* Extra Controls: Volume and Search */
@@ -138,10 +144,10 @@ body {
 }
 .playlist-search input.track-search {
   padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #555;
-  background: rgba(0,0,0,0.3);
-  color: #fff;
+  border-radius: 6px;
+  border: 1px solid #d1d1d6;
+  background: #fff;
+  color: var(--text-color);
 }
 
 /* Visualizer Styles */
@@ -152,41 +158,41 @@ body {
 #visualizer {
   width: 100%;
   height: 100px;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 4px;
-  background: rgba(0,0,0,0.2);
+  border: 1px solid #d1d1d6;
+  border-radius: 6px;
+  background: #fff;
 }
 
 /* Playlist Styles */
 .playlist-container {
   margin-top: 20px;
-  background: rgba(0,0,0,0.35);
+  background: #f2f2f7;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .playlist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #d1d1d6;
   padding-bottom: 10px;
 }
 .playlist-header h3 {
   margin: 0;
   font-size: 22px;
-  color: #ffd700;
+  color: var(--primary-color);
 }
 .playlist-header button {
   background: transparent;
   border: none;
-  color: #ff8080;
+  color: #ff3b30;
   font-size: 24px;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 .playlist-header button:hover {
-  color: #ff4c4c;
+  color: #d62d22;
 }
 .playlist-items {
   margin-top: 10px;
@@ -196,27 +202,27 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #d1d1d6;
   cursor: pointer;
   transition: background 0.3s ease;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 .playlist-track:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 122, 255, 0.1);
 }
 .playlist-track.current {
-  background: rgba(0, 172, 237, 0.3);
+  background: rgba(0, 122, 255, 0.15);
 }
 .playlist-track button {
   background: transparent;
   border: none;
-  color: #00aced;
+  color: var(--primary-color);
   font-size: 20px;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 .playlist-track button:hover {
-  color: #007bb5;
+  color: #005bb5;
 }
 
 /* Player Controls */
@@ -232,7 +238,7 @@ body {
 .transport-controls button {
   background: transparent;
   border: none;
-  color: #fff;
+  color: var(--primary-color);
   font-size: 28px;
   cursor: pointer;
   margin: 0 10px;
@@ -240,7 +246,7 @@ body {
 }
 .transport-controls button:hover {
   transform: scale(1.2);
-  color: #00aced;
+  color: #005bb5;
 }
 .progress-container {
   display: flex;
@@ -251,9 +257,9 @@ body {
 .progress-container input[type="range"] {
   flex: 1;
   -webkit-appearance: none;
-  background: #555;
+  background: #d1d1d6;
   height: 6px;
-  border-radius: 5px;
+  border-radius: 3px;
   outline: none;
   transition: background 0.3s ease;
 }
@@ -262,12 +268,12 @@ body {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #00aced;
+  background: var(--primary-color);
   cursor: pointer;
   transition: background 0.3s ease;
 }
 .progress-container input[type="range"]:hover::-webkit-slider-thumb {
-  background: #007bb5;
+  background: #005bb5;
 }
 .advanced-controls {
   display: flex;
@@ -278,31 +284,31 @@ body {
 .advanced-controls .control-label {
   font-size: 16px;
   margin-right: 8px;
-  color: #ddd;
+  color: var(--subtext-color);
 }
 .auto-next-label {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 16px;
-  color: #fff;
+  color: var(--text-color);
 }
 
 /* Info Tab Styles */
 .info-panel {
-  background: rgba(0, 0, 0, 0.45);
+  background: #f2f2f7;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   animation: slideIn 1s ease;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid #d1d1d6;
 }
 .info-panel h2 {
   font-size: 26px;
   margin-bottom: 15px;
   text-align: center;
-  color: #ffd700;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  color: var(--primary-color);
+  font-weight: 600;
   animation: fadeIn 1.2s ease-in-out;
 }
 .info-panel p {
@@ -316,22 +322,22 @@ body {
   text-align: center;
   font-style: italic;
   font-size: 14px;
-  color: #ccc;
+  color: var(--subtext-color);
 }
 
 /* Button Global Styles */
 button {
-  background: #00aced;
+  background: var(--primary-color);
   border: none;
   padding: 10px 18px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 button:hover {
-  background: #007bb5;
+  background: #005bb5;
   transform: scale(1.02);
 }
 
@@ -344,7 +350,8 @@ button:hover {
   from { transform: translateY(-20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-</style>
+  </style>
+</head>
 <body>
   <div class="container">
     <!-- Tab Navigation -->
@@ -437,8 +444,8 @@ button:hover {
     <div id="info" class="tab-content">
       <div class="info-panel">
         <h2>About This Player</h2>
-        <p>This advanced multi-file audio player lets you create, manage, and delete playlists with ease. Enjoy features like auto-next, in-depth audio file insights, adjustable playback speed, crossfade control, and live visualizations. Every detail has been crafted with finesse and style.</p>
-        <p>The interface boasts modern aesthetics, smooth animations, and intuitive controls that adapt seamlessly to your interactions. Experience a truly immersive media journey enhanced by rich design details.</p>
+        <p>This advanced multi-file audio player lets you create, manage, and delete playlists with ease. Enjoy features like auto-next, in-depth audio file insights, adjustable playback speed, crossfade control, and live visualizations—all wrapped in a minimalist, Apple-inspired interface.</p>
+        <p>Experience smooth animations, subtle shadows, and modern typography reminiscent of Apple's design ethos. Every detail has been crafted with finesse and style.</p>
         <footer>
           <p>Made By SayyadN</p>
         </footer>
@@ -501,7 +508,7 @@ button:hover {
   function drawVisualizer() {
     requestAnimationFrame(drawVisualizer);
     analyser.getByteFrequencyData(dataArray);
-    canvasCtx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    canvasCtx.fillStyle = "rgba(245,245,245,0.8)";
     canvasCtx.fillRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
 
     const barWidth = (visualizerCanvas.width / bufferLength) * 2.5;
@@ -509,7 +516,7 @@ button:hover {
     for(let i = 0; i < bufferLength; i++) {
       const barHeight = dataArray[i];
       const hue = i / bufferLength * 360;
-      canvasCtx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+      canvasCtx.fillStyle = `hsl(${hue}, 60%, 50%)`;
       canvasCtx.fillRect(posX, visualizerCanvas.height - barHeight / 2, barWidth, barHeight / 2);
       posX += barWidth + 1;
     }
