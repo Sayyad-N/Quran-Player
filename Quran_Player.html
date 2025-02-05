@@ -2,40 +2,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebSim Media Suite</title>
+  <title>WebSim Media Suite - Audio Player</title>
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <style>
-    /* Base Styles */
+</head>
+<style>
+  /* Base Styles */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #16222a, #3a6073);
   color: #fff;
   transition: background 0.5s ease;
+  min-height: 100vh;
 }
-
 .container {
   max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
-  border: 1px solid rgba(255,255,255,0.2);
+  margin: 40px auto;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.25);
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.7);
   background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(5px);
 }
 
 /* Tabs */
 .tabs {
   display: flex;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #444;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #555;
 }
 .tab {
   background: transparent;
   border: none;
-  padding: 12px 24px;
+  padding: 14px 28px;
   cursor: pointer;
   font-size: 16px;
   color: #ccc;
@@ -48,13 +50,14 @@ body {
 }
 .tab.active {
   color: #fff;
-  border-bottom: 3px solid #3498db;
+  border-bottom: 3px solid #00aced;
 }
 
 /* Tab Content */
 .tab-content {
   display: none;
   animation: fadeIn 0.5s ease-in-out;
+  padding: 10px;
 }
 .tab-content.active {
   display: block;
@@ -63,44 +66,50 @@ body {
 /* Audio Player Styles */
 .track-info {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   animation: slideIn 1s ease forwards;
 }
 .track-info .track-title {
-  font-size: 24px;
+  font-size: 28px;
   margin: 0;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+}
+.track-info .track-indicator {
+  font-size: 16px;
+  color: #a1a1a1;
+  margin-top: 4px;
 }
 .track-info .track-artist {
-  font-size: 16px;
+  font-size: 18px;
   color: #b0c4de;
   margin: 0;
 }
 .audio-details {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.45);
   padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  font-size: 14px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  font-size: 15px;
 }
 .audio-details h4 {
   margin: 0 0 10px 0;
-  font-size: 18px;
-  border-bottom: 1px solid #444;
+  font-size: 20px;
+  border-bottom: 1px solid #555;
   padding-bottom: 5px;
 }
 .audio-details p {
-  margin: 5px 0;
-  line-height: 1.4;
+  margin: 6px 0;
+  line-height: 1.5;
 }
 .audio-upload {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 #audio-upload-btn {
-  background: #2980b9;
+  background: #007bb5;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 4px;
   cursor: pointer;
   color: #fff;
@@ -108,33 +117,113 @@ body {
   transition: background 0.3s ease;
 }
 #audio-upload-btn:hover {
-  background: #1c6691;
+  background: #005f87;
+}
+
+/* Extra Controls: Volume and Search */
+.extra-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.volume-control, .playlist-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.volume-control input.volume {
+  width: 150px;
+}
+.playlist-search input.track-search {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+}
+
+/* Visualizer Styles */
+.visualizer-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+#visualizer {
+  width: 100%;
+  height: 100px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.2);
 }
 
 /* Playlist Styles */
 .playlist-container {
   margin-top: 20px;
-  background: rgba(0,0,0,0.3);
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.35);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
 .playlist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #555;
   padding-bottom: 10px;
+}
+.playlist-header h3 {
+  margin: 0;
+  font-size: 22px;
+  color: #ffd700;
+}
+.playlist-header button {
+  background: transparent;
+  border: none;
+  color: #ff8080;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.playlist-header button:hover {
+  color: #ff4c4c;
 }
 .playlist-items {
   margin-top: 10px;
+}
+.playlist-track {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #555;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  border-radius: 4px;
+}
+.playlist-track:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.playlist-track.current {
+  background: rgba(0, 172, 237, 0.3);
+}
+.playlist-track button {
+  background: transparent;
+  border: none;
+  color: #00aced;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.playlist-track button:hover {
+  color: #007bb5;
 }
 
 /* Player Controls */
 .player-controls {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
   margin-bottom: 20px;
 }
 .transport-controls {
@@ -144,139 +233,97 @@ body {
   background: transparent;
   border: none;
   color: #fff;
-  font-size: 26px;
+  font-size: 28px;
   cursor: pointer;
   margin: 0 10px;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 .transport-controls button:hover {
-  transform: scale(1.15);
-  color: #3498db;
+  transform: scale(1.2);
+  color: #00aced;
 }
 .progress-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 14px;
+  gap: 14px;
+  font-size: 16px;
 }
 .progress-container input[type="range"] {
   flex: 1;
   -webkit-appearance: none;
-  background: #444;
-  height: 5px;
+  background: #555;
+  height: 6px;
   border-radius: 5px;
   outline: none;
   transition: background 0.3s ease;
 }
 .progress-container input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #3498db;
+  background: #00aced;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 .progress-container input[type="range"]:hover::-webkit-slider-thumb {
-  background: #2980b9;
+  background: #007bb5;
 }
 .advanced-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 .advanced-controls .control-label {
-  font-size: 14px;
-  margin-right: 5px;
+  font-size: 16px;
+  margin-right: 8px;
   color: #ddd;
 }
 .auto-next-label {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 14px;
+  gap: 6px;
+  font-size: 16px;
   color: #fff;
 }
 
-/* File Manager Styles */
-#file-manager {
-  background: #252525;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-  animation: fadeIn 1s ease;
+/* Info Tab Styles */
+.info-panel {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  animation: slideIn 1s ease;
+  border: 1px solid rgba(255,255,255,0.2);
 }
-.file-manager-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.info-panel h2 {
+  font-size: 26px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 10px;
+  text-align: center;
+  color: #ffd700;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  animation: fadeIn 1.2s ease-in-out;
 }
-.file-manager-controls {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-}
-.folder-path {
-  margin-bottom: 10px;
-  font-style: italic;
-}
-.folder-path button {
-  background: #3498db;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 10px;
-  transition: background 0.3s ease;
-}
-.folder-path button:hover {
-  background: #2980b9;
-}
-.file-list {
-  margin-top: 15px;
-  background: #1e1e1e;
-  padding: 10px;
-  border-radius: 6px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-.file-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid #444;
-  transition: background 0.3s ease;
-}
-.file-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.file-item:last-child {
-  border-bottom: none;
-}
-.file-item button {
-  background: transparent;
-  border: none;
-  color: #3498db;
-  cursor: pointer;
+.info-panel p {
   font-size: 16px;
-  margin-left: 8px;
-  transition: color 0.3s ease;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  text-align: justify;
+  animation: fadeIn 1.2s ease-in-out;
 }
-.file-item button:hover {
-  color: #2980b9;
+.info-panel footer {
+  text-align: center;
+  font-style: italic;
+  font-size: 14px;
+  color: #ccc;
 }
 
-/* Button Styles */
+/* Button Global Styles */
 button {
-  background: #3498db;
+  background: #00aced;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 18px;
   border-radius: 4px;
   cursor: pointer;
   color: #fff;
@@ -284,7 +331,7 @@ button {
   transition: background 0.3s ease, transform 0.3s ease;
 }
 button:hover {
-  background: #2980b9;
+  background: #007bb5;
   transform: scale(1.02);
 }
 
@@ -297,8 +344,7 @@ button:hover {
   from { transform: translateY(-20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
-  </style>
-</head>
+</style>
 <body>
   <div class="container">
     <!-- Tab Navigation -->
@@ -306,10 +352,9 @@ button:hover {
       <button class="tab active" data-target="audio-player">
         <i class="mdi mdi-music"></i> Audio Player
       </button>
-      <button class="tab" data-target="file-manager">
-        <i class="mdi mdi-folder-multiple"></i> File Manager
+      <button class="tab" data-target="info">
+        <i class="mdi mdi-information"></i> Info
       </button>
-      <!-- Network tab removed as per latest instruction -->
     </div>
 
     <!-- Audio Player Section -->
@@ -317,21 +362,44 @@ button:hover {
       <!-- Track Info with Animation -->
       <div class="track-info">
         <h2 class="track-title">No Audio Selected</h2>
+        <!-- New track indicator added for more details -->
+        <p class="track-indicator">Track 0 of 0</p>
         <p class="track-artist">N/A</p>
       </div>
-      <!-- Audio Details Box (Empty until audio is chosen) -->
+      <!-- Audio Details Box (Populated when audio is chosen) -->
       <div class="audio-details">
         <h4>Audio Details</h4>
-        <p>Select an audio file from your library to view details.</p>
+        <p>Select one or multiple audio files from your library to view details.</p>
       </div>
+      
       <!-- Upload Audio Control -->
       <div class="audio-upload">
         <button id="upload-audio-btn"><i class="mdi mdi-upload"></i> Upload Audio</button>
-        <input type="file" id="audio-upload-input" accept="audio/*" style="display:none">
+        <input type="file" id="audio-upload-input" accept="audio/*" multiple style="display:none">
       </div>
+      
+      <!-- Additional Controls: Volume, Mute, and Search Playlist -->
+      <div class="extra-controls">
+        <div class="volume-control">
+          <label class="control-label">Volume:</label>
+          <input type="range" class="volume" min="0" max="1" step="0.01" value="1">
+          <button class="mute" title="Mute/Unmute"><i class="mdi mdi-volume-high"></i></button>
+        </div>
+        <div class="playlist-search">
+          <input type="text" class="track-search" placeholder="Search track in playlist...">
+        </div>
+      </div>
+      
+      <!-- Visualizer Canvas -->
+      <div class="visualizer-container">
+        <canvas id="visualizer"></canvas>
+      </div>
+
+      <!-- Playlist Container with additional controls -->
       <div class="playlist-container">
         <div class="playlist-header">
           <h3>Smart Playlist</h3>
+          <button class="clear-playlist" title="Clear Playlist"><i class="mdi mdi-delete-sweep"></i></button>
         </div>
         <div class="playlist-items">
           <!-- Dynamically generated playlist items will appear here -->
@@ -365,27 +433,21 @@ button:hover {
       </div>
     </div>
 
-    <!-- File Manager Section -->
-    <div id="file-manager" class="tab-content">
-      <div class="file-manager-header">
-        <h3>Full Device File Manager</h3>
-      </div>
-      <div class="file-manager-controls">
-        <button class="access-device-btn"><i class="mdi mdi-folder"></i> Access Device Storage</button>
-      </div>
-      <!-- Folder Path Navigation -->
-      <div id="folder-path" class="folder-path">
-        <!-- Back button will be injected here when inside a folder -->
-      </div>
-      <!-- Dynamic file list with full device files -->
-      <div class="file-list">
-        <!-- File items will be dynamically generated -->
+    <!-- Info Tab Section -->
+    <div id="info" class="tab-content">
+      <div class="info-panel">
+        <h2>About This Player</h2>
+        <p>This advanced multi-file audio player lets you create, manage, and delete playlists with ease. Enjoy features like auto-next, in-depth audio file insights, adjustable playback speed, crossfade control, and live visualizations. Every detail has been crafted with finesse and style.</p>
+        <p>The interface boasts modern aesthetics, smooth animations, and intuitive controls that adapt seamlessly to your interactions. Experience a truly immersive media journey enhanced by rich design details.</p>
+        <footer>
+          <p>Made By SayyadN</p>
+        </footer>
       </div>
     </div>
-
   </div>
-  <script >document.addEventListener('DOMContentLoaded', function() {
-  // Tab switching logic
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  // Tab switching logic for multiple tabs
   const tabs = document.querySelectorAll('.tab');
   const tabContents = document.querySelectorAll('.tab-content');
   tabs.forEach(tab => {
@@ -400,6 +462,9 @@ button:hover {
 
   // AUDIO PLAYER SETUP
   let isPlaying = false;
+  let playlist = [];
+  let playlistIndex = 0;
+  
   const playPauseButton = document.querySelector('.play-pause');
   const playPauseIcon = playPauseButton.querySelector('i');
   const timeCurrent = document.querySelector('.time-current');
@@ -411,32 +476,53 @@ button:hover {
   const audioDetails = document.querySelector('.audio-details');
   const uploadAudioBtn = document.getElementById('upload-audio-btn');
   const audioUploadInput = document.getElementById('audio-upload-input');
+  const volumeSlider = document.querySelector('.volume');
+  const muteButton = document.querySelector('.mute');
+  const trackSearchInput = document.querySelector('.track-search');
+  const playlistContainer = document.querySelector('.playlist-items');
+  const visualizerCanvas = document.getElementById('visualizer');
+  const trackIndicator = document.querySelector('.track-indicator');
 
   const audio = new Audio();
-  
+
+  // Audio Visualizer Setup using Web Audio API
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const analyser = audioContext.createAnalyser();
+  analyser.fftSize = 256;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+  const canvasCtx = visualizerCanvas.getContext("2d");
+
+  // Connect audio element to analyser node via MediaElementAudioSourceNode
+  const sourceNode = audioContext.createMediaElementSource(audio);
+  sourceNode.connect(analyser);
+  analyser.connect(audioContext.destination);
+
+  function drawVisualizer() {
+    requestAnimationFrame(drawVisualizer);
+    analyser.getByteFrequencyData(dataArray);
+    canvasCtx.fillStyle = "rgba(0, 0, 0, 0.2)";
+    canvasCtx.fillRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+
+    const barWidth = (visualizerCanvas.width / bufferLength) * 2.5;
+    let posX = 0;
+    for(let i = 0; i < bufferLength; i++) {
+      const barHeight = dataArray[i];
+      const hue = i / bufferLength * 360;
+      canvasCtx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+      canvasCtx.fillRect(posX, visualizerCanvas.height - barHeight / 2, barWidth, barHeight / 2);
+      posX += barWidth + 1;
+    }
+  }
+  drawVisualizer();
+
   function formatTime(seconds) {
     const mins = Math.floor(seconds / 60) || 0;
     const secs = Math.floor(seconds % 60) || 0;
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   }
-  
-  audio.addEventListener('loadedmetadata', () => {
-    if (audio.duration) {
-      timeTotal.textContent = formatTime(audio.duration);
-      trackTitle.textContent = "Selected Audio";
-      trackArtist.textContent = "Unknown Source";
-      audioDetails.innerHTML = `
-        <h4>Audio File Details</h4>
-        <p><strong>Format:</strong> Unknown</p>
-        <p><strong>Sample Rate:</strong> Unknown</p>
-        <p><strong>Bitrate:</strong> Unknown</p>
-        <p><strong>Duration:</strong> ${formatTime(audio.duration)}</p>
-        <p><strong>Channels:</strong> Unknown</p>
-        <p><strong>File Size:</strong> Unknown</p>
-      `;
-    }
-  });
-  
+
+  // Update time display and progress bar
   audio.addEventListener('timeupdate', () => {
     if (audio.duration) {
       timeCurrent.textContent = formatTime(audio.currentTime);
@@ -444,20 +530,45 @@ button:hover {
       progressInput.value = progress;
     }
   });
-  
+
+  // When metadata is loaded, display audio details
+  audio.addEventListener('loadedmetadata', () => {
+    if (audio.duration) {
+      timeTotal.textContent = formatTime(audio.duration);
+      audioDetails.innerHTML = `
+        <h4>Audio File Details</h4>
+        <p><strong>Format:</strong> ${currentTrack()?.file.type || "Unknown"}</p>
+        <p><strong>Duration:</strong> ${formatTime(audio.duration)}</p>
+        <p><strong>File Size:</strong> ${currentTrack() ? ((currentTrack().file.size / 1024).toFixed(2) + " KB") : "Unknown"}</p>
+      `;
+    }
+  });
+
+  // Auto next functionality when track ends
   audio.addEventListener('ended', () => {
     isPlaying = false;
     playPauseIcon.classList.replace('mdi-pause', 'mdi-play');
     if (autoNextCheckbox && autoNextCheckbox.checked) {
-      alert('Auto next audio triggered.');
-      // Logic for auto next audio goes here...
+      if (playlistIndex < playlist.length - 1) {
+        playlistIndex++;
+        playTrack(playlistIndex);
+        updatePlaylistUI();
+      } else {
+        alert('Playlist ended.');
+      }
     }
   });
-  
+
+  // Play/Pause button logic
   playPauseButton.addEventListener('click', () => {
     if (!audio.src) {
-      alert('No audio selected. Please choose an audio file from your library.');
-      return;
+      if (playlist.length > 0) {
+        playTrack(playlistIndex);
+        return;
+      } else {
+        alert('No audio selected. Please upload audio files.');
+        return;
+      }
     }
     if (isPlaying) {
       audio.pause();
@@ -468,147 +579,175 @@ button:hover {
     }
     isPlaying = !isPlaying;
   });
-  
+
+  // Seek functionality for progress bar
   progressInput.addEventListener('input', (e) => {
     if (audio.duration) {
       const seekTo = e.target.value / 100;
       audio.currentTime = audio.duration * seekTo;
     }
   });
-  
+
+  // Playback speed control
   document.querySelector('.speed').addEventListener('input', (e) => {
     audio.playbackRate = parseFloat(e.target.value);
   });
-  
+
+  // Crossfade control (for demonstration purposes)
   document.querySelector('.crossfade').addEventListener('input', (e) => {
     console.log('Crossfade set to:', e.target.value);
   });
-  
-  // Upload Audio Functionality
+
+  // Upload Audio Functionality (Multiple Files Supported)
   uploadAudioBtn.addEventListener('click', () => {
     audioUploadInput.click();
   });
-  
+
   audioUploadInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const objectURL = URL.createObjectURL(file);
-      audio.src = objectURL;
-      trackTitle.textContent = file.name;
-      trackArtist.textContent = "Local File";
-      audio.load();
+    const files = e.target.files;
+    if (files.length) {
+      for (const file of files) {
+        const objectURL = URL.createObjectURL(file);
+        playlist.push({ file, objectURL });
+      }
+      updatePlaylistUI();
+      // Auto play the first track if none is playing
+      if (!isPlaying && !audio.src && playlist.length > 0) {
+        playTrack(playlistIndex);
+      }
     }
   });
-  
-  // FILE MANAGER: Real Device Storage Access Simulation
-  // Simulated full device storage structure with folders and files
-  let fileSystem = [
-    { id: 1, name: "Documents", type: "folder", children: [
-      { id: 11, name: "Report.docx", size: "45 KB", type: "file" },
-      { id: 12, name: "Invoice.pdf", size: "150 KB", type: "file" }
-    ] },
-    { id: 2, name: "Photos", type: "folder", children: [
-      { id: 21, name: "Vacation.jpg", size: "2 MB", type: "file" },
-      { id: 22, name: "Family.png", size: "1.5 MB", type: "file" }
-    ] },
-    { id: 3, name: "Videos", type: "folder", children: [
-      { id: 31, name: "Birthday.mp4", size: "15 MB", type: "file" }
-    ] }
-  ];
-  let currentFolder = fileSystem;
-  let folderStack = [];
-  const fileListEl = document.querySelector('.file-list');
-  const folderPathEl = document.getElementById('folder-path');
-  
-  function renderFolderPath() {
-    folderPathEl.innerHTML = "";
-    if (folderStack.length > 0) {
-      const backButton = document.createElement('button');
-      backButton.textContent = "Back";
-      backButton.addEventListener('click', () => {
-        currentFolder = folderStack.pop();
-        renderFileList();
-        renderFolderPath();
-      });
-      folderPathEl.appendChild(backButton);
-      const currentFolderName = currentFolder.folderName || "Current Folder";
-      const pathDisplay = document.createElement('span');
-      pathDisplay.textContent = " / " + currentFolderName;
-      folderPathEl.appendChild(pathDisplay);
-    } else {
-      folderPathEl.textContent = "Root Storage";
-    }
-  }
-  
-  function renderFileList() {
-    fileListEl.innerHTML = "";
-    currentFolder.forEach(item => {
-      const fileItem = document.createElement('div');
-      fileItem.classList.add('file-item');
-      fileItem.dataset.fileId = item.id;
-      let buttons = "";
-      if (item.type === 'folder') {
-        buttons = `<button class="open-btn" title="Open Folder"><i class="mdi mdi-folder"></i></button>`;
-      } else {
-        buttons = `<button class="view-btn" title="View File"><i class="mdi mdi-eye"></i></button>
-                   <button class="download-btn" title="Download File"><i class="mdi mdi-download"></i></button>
-                   <button class="edit-btn" title="Edit File Name"><i class="mdi mdi-pencil"></i></button>`;
+
+  // Update playlist UI along with track indicator
+  function updatePlaylistUI() {
+    playlistContainer.innerHTML = "";
+    const query = trackSearchInput.value.toLowerCase();
+    playlist.forEach((item, index) => {
+      // Filter tracks based on search query
+      if (!item.file.name.toLowerCase().includes(query)) return;
+      const trackItem = document.createElement('div');
+      trackItem.classList.add('playlist-track');
+      if (index === playlistIndex) {
+        trackItem.classList.add('current');
       }
-      fileItem.innerHTML = `
-        <span class="file-name">${item.name}</span>
-        <span class="file-size">${item.size || ''}</span>
-        ${buttons}
+      trackItem.innerHTML = `
+        <span>${item.file.name}</span>
+        <button class="remove-track" data-index="${index}" title="Remove Track"><i class="mdi mdi-delete"></i></button>
       `;
-      if(item.type === 'folder'){
-        fileItem.addEventListener('dblclick', () => {
-          folderStack.push(currentFolder);
-          currentFolder = item.children || [];
-          currentFolder.folderName = item.name;
-          renderFileList();
-          renderFolderPath();
-        });
-        fileItem.querySelector('.open-btn').addEventListener('click', () => {
-          folderStack.push(currentFolder);
-          currentFolder = item.children || [];
-          currentFolder.folderName = item.name;
-          renderFileList();
-          renderFolderPath();
-        });
-      } else {
-        fileItem.querySelector('.view-btn').addEventListener('click', () => {
-          alert(`Viewing "${item.name}" (simulated content).\nContent: Sample content of ${item.name}`);
-        });
-        fileItem.querySelector('.download-btn').addEventListener('click', () => {
-          const content = `This is the content of ${item.name}.`;
-          const blob = new Blob([content], { type: 'text/plain' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = item.name;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        });
-        fileItem.querySelector('.edit-btn').addEventListener('click', () => {
-          const newName = prompt("Enter new name for the file:", item.name);
-          if(newName && newName.trim() !== "") {
-            item.name = newName.trim();
-            renderFileList();
-          }
-        });
-      }
-      fileListEl.appendChild(fileItem);
+      // Allow double-click to play a specific track
+      trackItem.addEventListener('dblclick', () => {
+        playlistIndex = index;
+        playTrack(playlistIndex);
+        updatePlaylistUI();
+      });
+      playlistContainer.appendChild(trackItem);
     });
+    updateTrackIndicator();
   }
-  
-  // Access full device storage when button is clicked
-  document.querySelector('.access-device-btn').addEventListener('click', () => {
-    alert('Accessing full device storage...');
-    renderFileList();
-    renderFolderPath();
+
+  // Helper to get current track info
+  function currentTrack() {
+    return playlist[playlistIndex];
+  }
+
+  // Update the track indicator showing current track number and total tracks
+  function updateTrackIndicator() {
+    trackIndicator.textContent = `Track ${playlist.length ? (playlistIndex + 1) : 0} of ${playlist.length}`;
+  }
+
+  // Play a track from the playlist by index
+  function playTrack(index) {
+    if (playlist[index]) {
+      audio.src = playlist[index].objectURL;
+      audio.load();
+      audio.play();
+      playPauseIcon.classList.replace('mdi-play', 'mdi-pause');
+      isPlaying = true;
+      trackTitle.textContent = playlist[index].file.name;
+      trackArtist.textContent = "Playlist Track";
+      updateTrackIndicator();
+      // Update audio details when metadata is ready
+      audio.addEventListener('loadedmetadata', () => {
+        timeTotal.textContent = formatTime(audio.duration);
+        audioDetails.innerHTML = `
+          <h4>Audio File Details</h4>
+          <p><strong>Format:</strong> ${playlist[index].file.type || "Unknown"}</p>
+          <p><strong>Duration:</strong> ${formatTime(audio.duration)}</p>
+          <p><strong>File Size:</strong> ${(playlist[index].file.size / 1024).toFixed(2)} KB</p>
+        `;
+      }, { once: true });
+    }
+  }
+
+  // Previous and Next track controls
+  document.querySelector('.prev').addEventListener('click', () => {
+    if (playlist.length) {
+      playlistIndex = (playlistIndex > 0) ? playlistIndex - 1 : 0;
+      playTrack(playlistIndex);
+      updatePlaylistUI();
+    }
   });
-});</script>
-  
+
+  document.querySelector('.next').addEventListener('click', () => {
+    if (playlist.length && playlistIndex < playlist.length - 1) {
+      playlistIndex++;
+      playTrack(playlistIndex);
+      updatePlaylistUI();
+    }
+  });
+
+  // Remove track from playlist
+  playlistContainer.addEventListener('click', (e) => {
+    const removeBtn = e.target.closest('.remove-track');
+    if (removeBtn) {
+      const indexToRemove = parseInt(removeBtn.dataset.index);
+      if (indexToRemove === playlistIndex && isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        audio.src = "";
+      }
+      playlist.splice(indexToRemove, 1);
+      if (playlistIndex >= playlist.length) {
+        playlistIndex = playlist.length - 1;
+      }
+      updatePlaylistUI();
+    }
+  });
+
+  // Clear entire playlist
+  document.querySelector('.clear-playlist').addEventListener('click', () => {
+    playlist = [];
+    audio.pause();
+    audio.src = "";
+    isPlaying = false;
+    playlistIndex = 0;
+    updatePlaylistUI();
+    trackTitle.textContent = "No Audio Selected";
+    trackArtist.textContent = "N/A";
+    timeCurrent.textContent = "0:00";
+    timeTotal.textContent = "0:00";
+    audioDetails.innerHTML = `
+      <h4>Audio Details</h4>
+      <p>Select one or multiple audio files from your library to view details.</p>
+    `;
+  });
+
+  // Volume control
+  volumeSlider.addEventListener('input', (e) => {
+    audio.volume = parseFloat(e.target.value);
+  });
+
+  // Mute toggle via button
+  muteButton.addEventListener('click', () => {
+    audio.muted = !audio.muted;
+    muteButton.querySelector('i').className = audio.muted ? 'mdi mdi-volume-off' : 'mdi mdi-volume-high';
+  });
+
+  // Search in playlist
+  trackSearchInput.addEventListener('input', () => {
+    updatePlaylistUI();
+  });
+});
+  </script>
 </body>
 </html>
