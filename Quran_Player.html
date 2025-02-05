@@ -2,44 +2,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apple Style Audio Player</title>
+  <title>WebSim Media Suite - Advanced Audio Player</title>
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="styles.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <style>
-    /* Apple-Inspired Base Styles */
-:root {
-  --primary-color: #007AFF;
-  --background-color: #f5f5f7;
-  --container-bg: #ffffff;
-  --text-color: #1d1d1f;
-  --subtext-color: #3c3c4399;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-}
-
+    /* Base Styles */
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  background: var(--background-color);
-  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #fff;
+  transition: background 0.5s ease;
   min-height: 100vh;
-  line-height: 1.5;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .container {
   max-width: 1200px;
   margin: 40px auto;
   padding: 25px;
-  background: var(--container-bg);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px var(--shadow-color);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.35);
 }
 
 /* Tabs */
 .tabs {
   display: flex;
   margin-bottom: 25px;
-  border-bottom: 1px solid #d1d1d6;
+  border-bottom: 2px solid #555;
 }
 .tab {
   background: transparent;
@@ -47,17 +46,17 @@ body {
   padding: 14px 28px;
   cursor: pointer;
   font-size: 16px;
-  color: var(--subtext-color);
+  color: #ccc;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
 }
 .tab:hover {
-  color: var(--primary-color);
+  color: #fff;
   transform: scale(1.05);
 }
 .tab.active {
-  color: var(--primary-color);
-  border-bottom: 3px solid var(--primary-color);
+  color: #fff;
+  border-bottom: 3px solid #00aced;
 }
 
 /* Tab Content */
@@ -77,53 +76,50 @@ body {
   animation: slideIn 1s ease forwards;
 }
 .track-info .track-title {
-  font-size: 28px;
+  font-size: 32px;
   margin: 0;
-  font-weight: 600;
-}
-.track-info .track-indicator {
-  font-size: 16px;
-  color: var(--subtext-color);
-  margin-top: 4px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
 }
 .track-info .track-artist {
-  font-size: 18px;
-  color: var(--primary-color);
+  font-size: 20px;
+  color: #e0e0e0;
   margin: 0;
 }
 .audio-details {
-  background: #f2f2f7;
-  padding: 15px;
-  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 20px;
+  border-radius: 10px;
   margin-bottom: 25px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
   font-size: 15px;
+  line-height: 1.5;
 }
 .audio-details h4 {
   margin: 0 0 10px 0;
-  font-size: 20px;
-  border-bottom: 1px solid #d1d1d6;
+  font-size: 22px;
+  border-bottom: 1px solid #555;
   padding-bottom: 5px;
 }
 .audio-details p {
-  margin: 6px 0;
+  margin: 8px 0;
 }
 .audio-upload {
   text-align: center;
   margin-bottom: 25px;
 }
 #audio-upload-btn {
-  background: var(--primary-color);
+  background: #007bb5;
   border: none;
   padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   color: #fff;
-  font-weight: 600;
-  transition: background 0.3s ease;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 #audio-upload-btn:hover {
-  background: #005bb5;
+  background: #005f87;
+  transform: scale(1.03);
 }
 
 /* Extra Controls: Volume and Search */
@@ -143,11 +139,11 @@ body {
   width: 150px;
 }
 .playlist-search input.track-search {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #d1d1d6;
-  background: #fff;
-  color: var(--text-color);
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: rgba(0,0,0,0.3);
+  color: #fff;
 }
 
 /* Visualizer Styles */
@@ -157,42 +153,42 @@ body {
 }
 #visualizer {
   width: 100%;
-  height: 100px;
-  border: 1px solid #d1d1d6;
-  border-radius: 6px;
-  background: #fff;
+  height: 120px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.2);
 }
 
 /* Playlist Styles */
 .playlist-container {
   margin-top: 20px;
-  background: #f2f2f7;
+  background: rgba(0,0,0,0.45);
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
 .playlist-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #d1d1d6;
+  border-bottom: 1px solid #555;
   padding-bottom: 10px;
 }
 .playlist-header h3 {
   margin: 0;
-  font-size: 22px;
-  color: var(--primary-color);
+  font-size: 24px;
+  color: #ffd700;
 }
 .playlist-header button {
   background: transparent;
   border: none;
-  color: #ff3b30;
-  font-size: 24px;
+  color: #ff8080;
+  font-size: 26px;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 .playlist-header button:hover {
-  color: #d62d22;
+  color: #ff4c4c;
 }
 .playlist-items {
   margin-top: 10px;
@@ -201,143 +197,140 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #d1d1d6;
+  padding: 12px;
+  border-bottom: 1px solid #555;
   cursor: pointer;
   transition: background 0.3s ease;
-  border-radius: 6px;
 }
 .playlist-track:hover {
-  background: rgba(0, 122, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 .playlist-track.current {
-  background: rgba(0, 122, 255, 0.15);
+  background: rgba(0, 172, 237, 0.4);
 }
 .playlist-track button {
   background: transparent;
   border: none;
-  color: var(--primary-color);
-  font-size: 20px;
+  color: #00aced;
+  font-size: 22px;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 .playlist-track button:hover {
-  color: #005bb5;
+  color: #007bb5;
 }
 
 /* Player Controls */
 .player-controls {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   margin-bottom: 20px;
 }
 .transport-controls {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.transport-controls button {
-  background: transparent;
-  border: none;
-  color: var(--primary-color);
-  font-size: 28px;
-  cursor: pointer;
-  margin: 0 10px;
-  transition: transform 0.3s ease, color 0.3s ease;
+.left-controls,
+.right-controls {
+  display: flex;
+  gap: 15px;
 }
-.transport-controls button:hover {
-  transform: scale(1.2);
-  color: #005bb5;
+.center-control {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+.center-control button {
+  font-size: 48px;
 }
 .progress-container {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   font-size: 16px;
 }
 .progress-container input[type="range"] {
   flex: 1;
   -webkit-appearance: none;
-  background: #d1d1d6;
+  background: #555;
   height: 6px;
-  border-radius: 3px;
+  border-radius: 5px;
   outline: none;
   transition: background 0.3s ease;
 }
 .progress-container input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  background: var(--primary-color);
+  background: #00aced;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 .progress-container input[type="range"]:hover::-webkit-slider-thumb {
-  background: #005bb5;
+  background: #007bb5;
 }
 .advanced-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 .advanced-controls .control-label {
   font-size: 16px;
   margin-right: 8px;
-  color: var(--subtext-color);
+  color: #ddd;
 }
 .auto-next-label {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 16px;
-  color: var(--text-color);
+  color: #fff;
 }
 
-/* Info Tab Styles */
+/* Info Panel Styles */
 .info-panel {
-  background: #f2f2f7;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.7);
   animation: slideIn 1s ease;
-  border: 1px solid #d1d1d6;
+  text-align: justify;
 }
 .info-panel h2 {
-  font-size: 26px;
-  margin-bottom: 15px;
+  font-size: 28px;
+  margin-bottom: 18px;
   text-align: center;
-  color: var(--primary-color);
-  font-weight: 600;
-  animation: fadeIn 1.2s ease-in-out;
+  color: #ffd700;
 }
 .info-panel p {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 15px;
-  text-align: justify;
-  animation: fadeIn 1.2s ease-in-out;
+  font-size: 17px;
+  line-height: 1.7;
+  margin-bottom: 18px;
 }
 .info-panel footer {
   text-align: center;
   font-style: italic;
-  font-size: 14px;
-  color: var(--subtext-color);
+  font-size: 15px;
+  color: #ccc;
 }
 
-/* Button Global Styles */
+/* Global Button Styles */
 button {
-  background: var(--primary-color);
+  background: #00aced;
   border: none;
   padding: 10px 18px;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   color: #fff;
-  font-weight: 600;
+  font-weight: bold;
   transition: background 0.3s ease, transform 0.3s ease;
 }
 button:hover {
-  background: #005bb5;
+  background: #007bb5;
   transform: scale(1.02);
 }
 
@@ -369,11 +362,9 @@ button:hover {
       <!-- Track Info with Animation -->
       <div class="track-info">
         <h2 class="track-title">No Audio Selected</h2>
-        <!-- New track indicator added for more details -->
-        <p class="track-indicator">Track 0 of 0</p>
         <p class="track-artist">N/A</p>
       </div>
-      <!-- Audio Details Box (Populated when audio is chosen) -->
+      <!-- Audio Details Box -->
       <div class="audio-details">
         <h4>Audio Details</h4>
         <p>Select one or multiple audio files from your library to view details.</p>
@@ -402,7 +393,7 @@ button:hover {
         <canvas id="visualizer"></canvas>
       </div>
 
-      <!-- Playlist Container with additional controls -->
+      <!-- Playlist Container -->
       <div class="playlist-container">
         <div class="playlist-header">
           <h3>Smart Playlist</h3>
@@ -413,13 +404,20 @@ button:hover {
         </div>
       </div>
 
+      <!-- Player Controls with Changed Button Positions -->
       <div class="player-controls">
         <div class="transport-controls">
-          <button class="shuffle"><i class="mdi mdi-shuffle-variant"></i></button>
-          <button class="prev"><i class="mdi mdi-skip-previous"></i></button>
-          <button class="play-pause"><i class="mdi mdi-play"></i></button>
-          <button class="next"><i class="mdi mdi-skip-next"></i></button>
-          <button class="repeat"><i class="mdi mdi-repeat"></i></button>
+          <div class="left-controls">
+            <button class="shuffle"><i class="mdi mdi-shuffle-variant"></i></button>
+            <button class="prev"><i class="mdi mdi-skip-previous"></i></button>
+          </div>
+          <div class="center-control">
+            <button class="play-pause"><i class="mdi mdi-play"></i></button>
+          </div>
+          <div class="right-controls">
+            <button class="next"><i class="mdi mdi-skip-next"></i></button>
+            <button class="repeat"><i class="mdi mdi-repeat"></i></button>
+          </div>
         </div>
         
         <div class="progress-container">
@@ -444,10 +442,10 @@ button:hover {
     <div id="info" class="tab-content">
       <div class="info-panel">
         <h2>About This Player</h2>
-        <p>This advanced multi-file audio player lets you create, manage, and delete playlists with ease. Enjoy features like auto-next, in-depth audio file insights, adjustable playback speed, crossfade control, and live visualizations—all wrapped in a minimalist, Apple-inspired interface.</p>
-        <p>Experience smooth animations, subtle shadows, and modern typography reminiscent of Apple's design ethos. Every detail has been crafted with finesse and style.</p>
+        <p>This advanced multi-file audio player provides a powerful and stylish experience. Enjoy features such as the creation, management, and deletion of playlists, an auto-next functionality for seamless playback, dynamic visualizations powered by the Web Audio API, and detailed audio file inspections.</p>
+        <p>The design is modern and immersive, carefully styled to offer an optimal experience without relying on external management systems like Konx. All controls are intuitively placed and come with smooth animations for a polished user interface.</p>
         <footer>
-          <p>Made By SayyadN</p>
+          <p>Made By SayyadN &mdash; Avoid Konx Management System</p>
         </footer>
       </div>
     </div>
@@ -488,8 +486,7 @@ button:hover {
   const trackSearchInput = document.querySelector('.track-search');
   const playlistContainer = document.querySelector('.playlist-items');
   const visualizerCanvas = document.getElementById('visualizer');
-  const trackIndicator = document.querySelector('.track-indicator');
-
+  
   const audio = new Audio();
 
   // Audio Visualizer Setup using Web Audio API
@@ -508,15 +505,15 @@ button:hover {
   function drawVisualizer() {
     requestAnimationFrame(drawVisualizer);
     analyser.getByteFrequencyData(dataArray);
-    canvasCtx.fillStyle = "rgba(245,245,245,0.8)";
+    canvasCtx.fillStyle = "rgba(0, 0, 0, 0.2)";
     canvasCtx.fillRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
 
     const barWidth = (visualizerCanvas.width / bufferLength) * 2.5;
     let posX = 0;
-    for(let i = 0; i < bufferLength; i++) {
+    for (let i = 0; i < bufferLength; i++) {
       const barHeight = dataArray[i];
       const hue = i / bufferLength * 360;
-      canvasCtx.fillStyle = `hsl(${hue}, 60%, 50%)`;
+      canvasCtx.fillStyle = `hsl(${hue}, 70%, 50%)`;
       canvasCtx.fillRect(posX, visualizerCanvas.height - barHeight / 2, barWidth, barHeight / 2);
       posX += barWidth + 1;
     }
@@ -538,7 +535,7 @@ button:hover {
     }
   });
 
-  // When metadata is loaded, display audio details
+  // Display audio details when metadata loads
   audio.addEventListener('loadedmetadata', () => {
     if (audio.duration) {
       timeTotal.textContent = formatTime(audio.duration);
@@ -625,12 +622,11 @@ button:hover {
     }
   });
 
-  // Update playlist UI along with track indicator
+  // Update the playlist UI with search filtering
   function updatePlaylistUI() {
     playlistContainer.innerHTML = "";
     const query = trackSearchInput.value.toLowerCase();
     playlist.forEach((item, index) => {
-      // Filter tracks based on search query
       if (!item.file.name.toLowerCase().includes(query)) return;
       const trackItem = document.createElement('div');
       trackItem.classList.add('playlist-track');
@@ -641,7 +637,7 @@ button:hover {
         <span>${item.file.name}</span>
         <button class="remove-track" data-index="${index}" title="Remove Track"><i class="mdi mdi-delete"></i></button>
       `;
-      // Allow double-click to play a specific track
+      // Double-click to play a specific track
       trackItem.addEventListener('dblclick', () => {
         playlistIndex = index;
         playTrack(playlistIndex);
@@ -649,17 +645,11 @@ button:hover {
       });
       playlistContainer.appendChild(trackItem);
     });
-    updateTrackIndicator();
   }
 
   // Helper to get current track info
   function currentTrack() {
     return playlist[playlistIndex];
-  }
-
-  // Update the track indicator showing current track number and total tracks
-  function updateTrackIndicator() {
-    trackIndicator.textContent = `Track ${playlist.length ? (playlistIndex + 1) : 0} of ${playlist.length}`;
   }
 
   // Play a track from the playlist by index
@@ -672,7 +662,6 @@ button:hover {
       isPlaying = true;
       trackTitle.textContent = playlist[index].file.name;
       trackArtist.textContent = "Playlist Track";
-      updateTrackIndicator();
       // Update audio details when metadata is ready
       audio.addEventListener('loadedmetadata', () => {
         timeTotal.textContent = formatTime(audio.duration);
@@ -754,6 +743,9 @@ button:hover {
   trackSearchInput.addEventListener('input', () => {
     updatePlaylistUI();
   });
+
+  // Extra: Log to console to ensure we avoid any external Konx management system dependencies
+  console.log("Advanced Audio Player initialized. Konx Management System is not used.");
 });
   </script>
 </body>
